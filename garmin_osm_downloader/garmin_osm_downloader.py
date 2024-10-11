@@ -23,11 +23,17 @@ def download_files(urls, root_folder):
         except requests.exceptions.RequestException as e:
             print(f"Failed to download {url}: {e}")
 
+def load_urls_from_file(file_path):
+    with open(file_path, 'r') as file:
+        urls = [line.strip() for line in file if line.strip()]
+    return urls
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python garmin_osm_downloader.py <root_folder> <url1> <url2> ... <urlN>")
+        print("Usage: python garmin_osm_downloader.py <root_folder> <url_file>")
         sys.exit(1)
 
     root_folder = sys.argv[1]
-    urls = sys.argv[2:]
+    url_file = sys.argv[2]
+    urls = load_urls_from_file(url_file)
     download_files(urls, root_folder)
